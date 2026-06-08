@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>My Minimal Profile</title>
+    <!-- Bootstrap 5 CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Noto Sans JP / Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* スムーズスクロールと固定ナビゲーションバー用の余白設定 */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px; /* 固定ヘッダーの高さ分、スクロール位置を調整 */
+        }
+
+        /* 全体設定 - ミニマルデザインのベース */
+        body {
+            margin: 0;
+            font-family: 'Inter', 'Noto Sans JP', "Yu Gothic", sans-serif;
+            background-color: #fafafa;
+            color: #2b2b2b;
+            line-height: 1.8;
+            letter-spacing: 0.03em;
+            padding-top: 70px; /* 固定ナビバーがヘッダーと被るのを防ぐ */
+        }
+
+        /* ナビゲーションメニューバー */
+        .navbar-custom {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+            z-index: 1030; /* ヘッダーの背景よりも上に表示 */
+        }
+
+        .navbar-brand-custom {
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #111111 !important;
+            font-size: 1.1rem;
+        }
+
+        .nav-link-custom {
+            color: #555555 !important;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link-custom:hover {
+            color: #111111 !important;
+        }
+
+        /* 管理者への一言メッセージ用のアクティブな特別ボタンリンク */
+        .btn-nav-contact {
+            background-color: #111111;
+            color: #ffffff !important;
+            border-radius: 4px;
+            padding: 8px 16px !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-nav-contact:hover {
+            background-color: #333333;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
+
+        /* ヘッダー */
+        header {
+            position: relative;
+            height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* ヘッダー背景画像（不透明度 0.3 調整用疑似要素） */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/エメラルドグリーン.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4; /* 背景の不透明度を0.3に設定 */
+            z-index: 1;
+        }
+
+        /* ヘッダー内コンテンツ（背景の上に表示） */
+        header h1, header p {
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin: 0;
+            letter-spacing: 6px;
+            color: #111111;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8); /* 可読性をあげるための軽微なシャドウ */
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #444444;
+            margin-top: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 画像クレジット表記 */
+        .header-credit {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.75rem;
+            color: #666666;
+            letter-spacing: 0.05em;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* 共通セクション */
+        section {
+            width: 90%;
+            max-width: 800px;
+            margin: 100px auto;
+        }
+
+        section h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            border-left: 4px solid #111111;
+            padding-left: 15px;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            color: #111111;
+        }
+
+        /* Aboutテーブル */
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid #eaeaea;
+        }
+
+        .profile-table th, .profile-table td {
+            padding: 20px 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-table th {
+            width: 30%;
+            background-color: #fafafa;
+            font-weight: 500;
+            color: #666666;
+            text-align: left;
+        }
+
+        .profile-table td {
+            color: #333333;
+        }
+
+        .profile-table tr:last-child th,
+        .profile-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Gridレイアウト */
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card-custom {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: left;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        /* ホバー時の挙動を調整（リンク用カードのみ） */
+        .card-link-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-color: #111111;
+        }
+
+        .card-custom h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #111111;
+        }
+
+        .card-custom p {
+            font-size: 0.95rem;
+            color: #666666;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* 外部リンクを示す矢印マーク */
+        .link-arrow {
+            font-size: 0.85rem;
+            color: #999999;
+            transition: transform 0.3s ease;
+        }
+
+        .card-link-hover:hover .link-arrow {
+            transform: translateX(4px);
+            color: #111111;
+        }
+
+        /* 問い合わせ・一言フォームエリア */
+        .contact-area {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+        }
+
+        /* カスタムボタン (Bootstrapのbtnをさらにミニマルに昇華) */
+        .btn-minimal {
+            background-color: #111111;
+            color: #ffffff;
+            border: 1px solid #111111;
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-minimal:hover {
+            background-color: #ffffff;
+            color: #111111;
+            border-color: #111111;
+        }
+
+        /* 送信成功メッセージ */
+        #success-message {
+            display: none;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #ffffff;
+            color: #999999;
+            margin-top: 100px;
+            font-size: 0.85rem;
+            border-top: 1px solid #eaeaea;
+            letter-spacing: 1px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+            .header-credit {
+                bottom: 10px;
+                right: 15px;
+                font-size: 0.65rem;
+            }
+            section {
+                margin: 60px auto;
+            }
+            .profile-table th, .profile-table td {
+                padding: 15px;
+            }
+            .profile-table {
+                font-size: 0.95rem;
+            }
+            .contact-area {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ナビゲーションメニューバー -->
+    <nav class="navbar navbar-expand-md fixed-top navbar-custom py-3">
+        <div class="container-fluid px-4 px-md-5">
+            <a class="navbar-brand navbar-brand-custom" href="#">MY PORTFOLIO</a>
+            
+            <!-- スマホ用メニュー切り替えボタン -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center gap-1 gap-md-3 mt-3 mt-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#interest">Interest</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#manga">Favorite</a>
+                    </li>
+                    
+                    <!-- ドロップダウンメニュー (メニューバー内) -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            コンテンツ一覧
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow mt-2" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item py-2" href="#about" style="font-size: 0.9rem;">自己紹介</a></li>
+                            <li><a class="dropdown-item py-2" href="#interest" style="font-size: 0.9rem;">興味・関心</a></li>
+                            <li><a class="dropdown-item py-2" href="#manga" style="font-size: 0.9rem;">おすすめの漫画</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 管理者への一言メッセージページへのスクロールリンク (必須：画面遷移/移動が可能) -->
+                    <li class="nav-item ms-md-2 mt-2 mt-md-0">
+                        <a class="nav-link btn-nav-contact px-3 py-2 text-white" href="#contact">一言メッセージ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>My Profile</h1>
+        <p>Technical college student</p>
+        
+        <!-- クレジット表記（右下） -->
+        <div class="header-credit">
+            　冬の白川郷 © Koichi_Hayakawa クリエイティブ・コモンズ・ライセンス（表示4.0 国際）<br>https://creativecommons.org/licenses/by/4.0/
+        </div>
+    </header>
+
+    <!-- 自己紹介 (About) -->
+    <section id="about">
+        <h2>About</h2>
+        
+        <p class="mb-4 text-secondary">
+            美術から音楽、アートなど創作物全般が大好きです。
+        </p>
+
+        <!-- 名前、年齢、性別、出身、趣味 -->
+        <table class="profile-table">
+            <tbody>
+                <tr>
+                    <th>名前</th>
+                    <td>吉田 美海 (Miu Yoshida)</td>
+                </tr>
+                <tr>
+                    <th>年齢</th>
+                    <td>20歳</td>
+                </tr>
+                <tr>
+                    <th>性別</th>
+                    <td>女性</td>
+                </tr>
+                <tr>
+                    <th>出身</th>
+                    <td>沖縄県</td>
+                </tr>
+                <tr>
+                    <th>趣味</th>
+                    <td>音楽鑑賞、カフェ巡り、動画視聴、読書（マンガ）</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+<!-- 飯テロ動画 -->
+    <section id="interest">
+        <h2>YouTuber</h2>
+        <p class="mb-4 text-secondary">最近視聴している飯テロ動画です（クリックするとyoutubeへ移動します)</p>
+        
+        <div class="grid-list">
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://www.youtube.com/@Choki" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            Choki
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>丁寧な暮らしや料理、<br>田舎での日常を発信するYouTuber。穏やかなVlogで多くの視聴者を癒している。</p>
+                </div>
+            </div>
+
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://www.youtube.com/@alliswell.s" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            shizuki
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>日常の気づきや体験を発信し、視聴者に前向きなメッセージを届けるクリエイター。親しみやすい語り口で、多くの人に共感と癒やしを提供している。</p>
+                </div>
+            </div>
+
+
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://www.youtube.com/@CAFICT-channel" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            CAFICT
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>コーヒーと心地よい暮らしをテーマに、インテリアや愛用品を発信する人気クリエイター。洗練された映像表現が魅力。</p>
+                </div>
+            </div>
+	</div>
+    </section>
+    
+    <!-- おすすめの漫画 (Manga Showcase) -->
+    <section id="manga">
+        <h2>Favorite Media</h2>
+        <p class="mb-4 text-secondary">最近私が特にハマっている作品です（クリックするとサイトへ移動します)</p>
+
+        <div class="grid-list">
+            <!-- カグラバチ -->
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://kagurabachi.jp/" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            カグラバチ
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>刀匠だった父を殺され、妖刀を奪われた少年・千鉱。復讐を胸に秘めた彼が、妖術師たちとの激闘に挑む。迫力ある剣戟と緻密な物語が魅力のダークバトル漫画。</p>
+                </div>
+            </div>
+
+            <!-- ワンダ―フールズ -->
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://www.netflix.com/jp/title/81948067" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            ワンダーフールズ
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>平凡な町で暮らす人々が、ある出来事をきっかけに不思議な力を手に入れる。笑いと感動、ミステリーが交錯する韓国ドラマ。個性豊かな登場人物たちの成長と絆を描く心温まる物語。</p>
+                </div>
+            </div>
+
+            <!-- 勇者刑に処す -->
+            <div class="card-custom card-link-hover position-relative">
+                <div>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <a href="https://yushakei-pj.com/" target="_blank" rel="noopener noreferrer" class="stretched-link text-decoration-none text-dark">
+                            勇者刑に処す<br> 懲罰勇者9004隊刑務記録
+                        </a>
+                        <span class="link-arrow">↗</span>
+                    </h3>
+                    <p>死刑に代わる罰として勇者となった罪人たち。過酷な戦場へ送り込まれた「懲罰勇者9004隊」の戦いと生き様を描く、ダークファンタジー作品。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせ・一言メッセージ (Contact & Form) -->
+    <section id="contact">
+        <h2>Contact</h2>
+        <p class="mb-4 text-secondary">お気軽に一言メッセージをお送りください。</p>
+
+        <!-- メッセージ投稿フォーム -->
+        <div class="contact-area">
+            
+            <div id="success-message" class="alert alert-success border-0 text-center py-4 mb-4" style="background-color: #f0fdf4; color: #166534; border-radius: 8px;">
+                <h4 class="alert-heading fs-5 mb-2">メッセージを受け付けました（送信処理は行われません）</h4>
+                <p class="mb-0 small">ご入力ありがとうございました。入力フォームの動作確認完了です。</p>
+            </div>
+
+            <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                <div class="row g-4">
+                    
+                    <!-- 投稿者名 -->
+                    <div class="col-md-6">
+                        <label for="userName" class="form-label small text-uppercase text-secondary fw-semibold">投稿者名</label>
+                        <input type="text" class="form-control form-control-lg border-light-subtle shadow-none" id="userName" placeholder="あなたの名前" required style="font-size: 0.95rem; border-radius: 6px;">
+                    </div>
+                    
+                    <!-- 性別 (ドロップダウン) -->
+                    <div class="col-md-6">
+                        <label for="userGender" class="form-label small text-uppercase text-secondary fw-semibold">性別</label>
+                        <select class="form-select form-select-lg border-light-subtle shadow-none" id="userGender" required style="font-size: 0.95rem; border-radius: 6px; height: calc(3rem + 2px);">
+                            <option value="" disabled selected hidden>選択してください</option>
+                            <option value="male">男性</option>
+                            <option value="female">女性</option>
+                            <option value="other">その他</option>
+                            <option value="no-answer">回答しない</option>
+                        </select>
+                    </div>
+                    
+                    <!-- メッセージ -->
+                    <div class="col-12">
+                        <label for="userMessage" class="form-label small text-uppercase text-secondary fw-semibold">メッセージ</label>
+                        <textarea class="form-control form-control-lg border-light-subtle shadow-none" id="userMessage" rows="4" placeholder="一言メッセージを入力してください..." required style="font-size: 0.95rem; border-radius: 6px;"></textarea>
+                    </div>
+
+                    <!-- 削除用パスワード -->
+                    <div class="col-12">
+                        <label for="deletePassword" class="form-label small text-uppercase text-secondary fw-semibold">パスワード</label>
+                        <input type="password" class="form-control form-control-lg border-light-subtle shadow-none" id="deletePassword" placeholder="半角英数字4桁以上" required style="font-size: 0.95rem; border-radius: 6px;">
+                    </div>
+                    
+                    <!-- 送信ボタン -->
+                    <div class="col-12 text-center mt-5">
+                        <button type="submit" class="btn btn-minimal shadow-sm">
+                            メッセージを送信する
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>© 2026 My Portfolio. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- フォーム送信挙動制御スクリプト -->
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault(); // 実際のサーバー送信をキャンセル
+            
+            // 入力要素の値を取得
+            const name = document.getElementById('userName').value;
+            const gender = document.getElementById('userGender').value;
+            const message = document.getElementById('userMessage').value;
+            const password = document.getElementById('deletePassword').value;
+            
+            // 簡単な入力チェック
+            if (name && gender && message && password) {
+                const successDiv = document.getElementById('success-message');
+                successDiv.style.display = 'block';
+                
+                // フォームの入力内容を初期化
+                document.getElementById('contactForm').reset();
+                
+                // 5秒後に送信成功通知を自動で消去
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
